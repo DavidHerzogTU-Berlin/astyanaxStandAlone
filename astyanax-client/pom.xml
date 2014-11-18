@@ -14,6 +14,23 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <repositories>
+      <repository>
+      <id>akka-snapshots</id>
+      <snapshots>
+      <enabled>true</enabled>
+      </snapshots>
+      <url>http://repo.akka.io/snapshots/</url>
+      </repository>
+
+      <repository>
+      <id>local-repo</id>
+      <snapshots>
+      <enabled>true</enabled>
+      </snapshots>
+      <url>file:~/.m2/repository</url>
+      </repository>
+    </repositories>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -21,5 +38,102 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>com.netflix.astyanax</groupId>
+        <artifactId>astyanax</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+     </dependency>
+      <dependency>
+        <groupId>com.netflix.astyanax</groupId>
+        <artifactId>astyanax-core</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+     </dependency>
+
+     <dependency>
+        <groupId>com.netflix.astyanax</groupId>
+        <artifactId>astyanax-thrift</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+     </dependency>
+
+     <dependency>
+        <groupId>com.netflix.astyanax</groupId>
+        <artifactId>astyanax-cassandra</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+     </dependency>
+
+     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>17.0</version>
+    </dependency> 
+
+    <dependency>
+      <groupId>com.typesafe</groupId>
+      <artifactId>config</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-actor_2.10</artifactId>
+      <version>2.4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.10.3-RC1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>2.10.3-RC1</version>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+    </plugin>
+    <plugin>
+      <groupId>br.com.ingenieux</groupId>
+      <artifactId>beanstalk-maven-plugin</artifactId>
+      <executions>
+          <execution>
+              <id>expose-security-credentials</id>
+              <phase>validate</phase>
+              <goals>
+                  <goal>expose-security-credentials</goal>
+              </goals>
+          </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <version>2.2.1</version>
+      <configuration>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+        <appendAssemblyId>false</appendAssemblyId>
+      </configuration>
+      <executions>
+        <execution>
+          <phase>package</phase>
+          <goals>
+            <goal>single</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+   </plugins>
+  </build>
+
+
 </project>

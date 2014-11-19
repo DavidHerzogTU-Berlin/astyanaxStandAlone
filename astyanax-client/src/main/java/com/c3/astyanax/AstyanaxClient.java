@@ -36,12 +36,6 @@ import java.util.Random;
 import java.util.Properties;
 import java.io.UnsupportedEncodingException;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import com.netflix.astyanax.connectionpool.impl.PendingRequestMap;
 import com.netflix.astyanax.connectionpool.exceptions.OperationException;
 import com.netflix.astyanax.connectionpool.Host;
 
@@ -83,10 +77,14 @@ public class AstyanaxClient {
 	private static AstyanaxContext<Keyspace> context;
 	private static Keyspace keyspace;	
 	private String latencyScoreStrategy;
-	public void init() {
 
-		ConnectionPoolConfigurationImpl connectionPoolConfig = new ConnectionPoolConfigurationImpl(SCORE_STRATEGY_DEFAULT);
-		latencyScoreStrategy = SCORE_STRATEGY_DEFAULT;
+	public static final boolean OK = true;
+	public static final boolean ERROR = false;
+
+	public boolean init() {
+		try {
+			ConnectionPoolConfigurationImpl connectionPoolConfig = new ConnectionPoolConfigurationImpl(SCORE_STRATEGY_DEFAULT);
+			latencyScoreStrategy = SCORE_STRATEGY_DEFAULT;
 			if(latencyScoreStrategy.equals("continuous")) {
 				connectionPoolConfig.setLatencyScoreStrategy(new EmaLatencyScoreContinuousStrategyImpl());
 			} else {
@@ -95,7 +93,7 @@ public class AstyanaxClient {
 				else
 					connectionPoolConfig.setLatencyScoreStrategy(new SmaLatencyScoreStrategyImpl());
 			}
-		context = new AstyanaxContext.Builder()
+			context = new AstyanaxContext.Builder()
 					.forCluster("Test Cluster")
 					.forKeyspace("usertable")
 					.withAstyanaxConfiguration(
@@ -128,6 +126,61 @@ public class AstyanaxClient {
 
 			EMP_CF = ColumnFamily.newColumnFamily(EMP_CF_NAME,
 					StringSerializer.get(), StringSerializer.get());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
+		return OK;
+	}
+
+	public boolean insert(String table, String key,
+		HashMap<String, String> values) {
+		MutationBatch m = keyspace.prepareMutationBatch();
+		try {
+			for (Entry<String, String> entry : values.entrySet()) {
+				m.withRow(EMP_CF, key)
+						.putColumn(entry.getKey(), entry.getValue(),
+								null).setTimestamp(System.currentTimeMillis());
+			}
+
+			OperationResult<Void> result = m.execute();
+
+		} catch (ConnectionException e) {
+			System.out.println(e);
+			return ERROR;
+		}
+		return OK;
+	}
+
+	public boolean read(String table, String key, Set<String> fields,
+			HashMap<String, String> result) {
+		try {
+			if (fields == null) {
+				final OperationResult<ColumnList<String>> opresult = keyspace
+						.prepareQuery(EMP_CF).getKey(key).execute();
+				
+				ColumnList<String> columns  = opresult.getResult();
+				for (String s : columns.getColumnNames()) {
+					result.put(s, columns.getColumnByName(s).getStringValue());
+				} 
+				
+			} else {
+				final OperationResult<ColumnList<String>> opresult = keyspace
+						.prepareQuery(EMP_CF).getKey(key)
+						.withColumnSlice(fields).execute();
+				
+				ColumnList<String> columns  = opresult.getResult();
+				for (String s : columns.getColumnNames()) {
+					result.put(s, columns.getColumnByName(s).getStringValue());
+				} 
+			}
+			return OK;
+
+		} catch (Throwable e) {
+			e.printStackTrace();
+			return ERROR;
+		}
+
 	}
 
 }

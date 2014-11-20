@@ -1,0 +1,31 @@
+Astyanax Stand Alone Client
+Run Server which listens on a TCP port and passes commands to our Astyanax client.
+g
+1) clone the project:
+	git clone git@gitlab.tubit.tu-berlin.de:freecookie/astyanxclient.git
+	cd astyanaxclient
+	mvn clean package
+
+2) Use the our Cassandra cluster:
+   git clone https://github.com/DavidHerzogTU-Berlin/cassandraToRun
+   cd cassandraToRun
+   ant
+
+3) Start Server on port 2345:
+		mvn exec:java -Dexec.mainClass="com.c3.server.Server" -Dexec.args="2345"
+
+   Now your Cassandra cluster needs to run
+
+   Start Client (Connecting to: 127.0.0.1 port 2345):
+   		mvn exec:java -Dexec.mainClass="com.c3.client.LittleClient" -Dexec.args="127.0.0.1 2345"
+
+---------OR---------
+
+	Use an IDE of your choice and import the astyanaxproject then run the main method in Server.java -> Server is now listening. 
+	Start your cassandra cluster.
+	To Test the server you can use our LittleClient.java
+	-> Run the main method and now you can give commands via the command line for example:
+	write;Eric_Cartman;head-blue;body-fat
+	read;Eric_Cartman;
+
+	The server will respond with a message whether the commands were successful.

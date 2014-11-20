@@ -23,7 +23,8 @@ public static void main(String[] args) throws IOException {
                 new BufferedReader(new InputStreamReader(System.in));
             String fromServer;
             String fromUser;
-
+            System.out.println("Connecting to server...");
+            System.out.println("Type your command in the command line after the server responded.");
             while ((fromServer = in.readLine()) != null) {
                 System.out.println("Server: " + fromServer);    
                 fromUser = stdIn.readLine();

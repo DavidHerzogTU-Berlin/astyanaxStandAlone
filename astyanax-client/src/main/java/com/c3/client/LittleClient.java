@@ -10,8 +10,14 @@ import java.net.UnknownHostException;
 public class LittleClient {
 public static void main(String[] args) throws IOException {
         
-        String serverIP = "127.0.0.1";
-        int portNumber = 2345;
+	if (args.length != 2) {
+        System.err.println(
+            "Usage (args): <host name> <port number>");
+        System.exit(1);
+    }
+
+    String serverIP = args[0];
+    int portNumber = Integer.parseInt(args[1]);
 
         try (
             Socket socket = new Socket(serverIP, portNumber);

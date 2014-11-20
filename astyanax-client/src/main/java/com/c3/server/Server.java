@@ -8,7 +8,7 @@ public class Server {
 
 	        int portNumber = 2345;
 	        boolean listening = true;
-	        
+	        System.out.println("Server is running and listening...");
 	        try (ServerSocket serverSocket = new ServerSocket(portNumber)) { 
 	            while (listening) {
 		            new ServerThread(serverSocket.accept()).start();

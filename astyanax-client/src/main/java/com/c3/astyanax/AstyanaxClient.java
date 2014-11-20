@@ -1,9 +1,6 @@
 package com.c3.astyanax;
 
-import static com.netflix.astyanax.examples.ModelConstants.*;
-
 import com.netflix.astyanax.AstyanaxContext;
-import com.netflix.astyanax.ColumnListMutation;
 import com.netflix.astyanax.Keyspace;
 import com.netflix.astyanax.MutationBatch;
 import com.netflix.astyanax.connectionpool.NodeDiscoveryType;
@@ -12,32 +9,15 @@ import com.netflix.astyanax.connectionpool.exceptions.ConnectionException;
 import com.netflix.astyanax.connectionpool.impl.*;
 import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
 import com.netflix.astyanax.impl.AstyanaxConfigurationImpl;
-import com.netflix.astyanax.model.Column;
 import com.netflix.astyanax.model.ColumnFamily;
 import com.netflix.astyanax.model.ColumnList;
-import com.netflix.astyanax.model.CqlResult;
-import com.netflix.astyanax.model.Row;
-import com.netflix.astyanax.serializers.IntegerSerializer;
 import com.netflix.astyanax.serializers.StringSerializer;
 import com.netflix.astyanax.thrift.ThriftFamilyFactory;
-import com.netflix.astyanax.thrift.ThriftColumnFamilyQueryImpl;
-import com.netflix.astyanax.query.IndexQuery;
 import com.netflix.astyanax.model.ConsistencyLevel;
-import com.netflix.astyanax.model.Rows;
-import java.net.InetAddress;
-import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
-import java.nio.ByteBuffer;
-import java.util.Vector;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Properties;
-import java.io.UnsupportedEncodingException;
 import java.util.Map.Entry;
-import com.netflix.astyanax.connectionpool.exceptions.OperationException;
-import com.netflix.astyanax.connectionpool.Host;
+
 
 public class AstyanaxClient {
 
@@ -126,6 +106,7 @@ public class AstyanaxClient {
 
 			EMP_CF = ColumnFamily.newColumnFamily(EMP_CF_NAME,
 					StringSerializer.get(), StringSerializer.get());
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;

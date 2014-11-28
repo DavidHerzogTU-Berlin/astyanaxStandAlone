@@ -66,7 +66,7 @@ public class ServerThread extends Thread{
             					out.println(readResult);
             				}	
             				else 
-            					out.println("read:failor");
+            					out.println("READ_FAILOR");
             			 } else {
             				 if (inputCommand[0].equals("write")) {
             					 if( ac.insert(null, inputCommand[1], makeReadValues(inputCommand)))

@@ -6,7 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
-
+import java.util.Set;
+import java.util.HashSet;
 import com.c3.astyanax.AstyanaxClient;
 
 public class ServerThread extends Thread{
@@ -28,7 +29,17 @@ public class ServerThread extends Thread{
     	}
     	return values;
     }
-    
+
+    private Set<String> getFieldsToReadFrom(String[] inputCommand) {
+        if (inputCommand.length == 2 )
+            return null;
+        Set<String> fieldSet = new HashSet<String>();
+        for(int i = 2; i < inputCommand.length; i++) {
+            fieldSet.add(inputCommand[i]);
+        }
+        return fieldSet;
+    }
+
     public void run() {
 
         try (
@@ -47,14 +58,13 @@ public class ServerThread extends Thread{
             		 if(inputCommand.length >= 2 ) {
             			 if (inputCommand[0].equals("read")) {
             				HashMap<String, String> result = new HashMap<String, String>();
-            				if( ac.read(null, inputCommand[1], null, result)) {
+            				if( ac.read(null, inputCommand[1], getFieldsToReadFrom(inputCommand), result)) {
             					String readResult = "";
             					for (String column : result.keySet()) {
-            						readResult = readResult + "Column: " + column + " Value: " + result.get(column) + " | ";
+            						readResult = readResult + "C:" + column + "V:" + result.get(column) + " | ";
             					}
-            					out.println("read:success: result: " + readResult);
-            				}
-            					
+            					out.println(readResult);
+            				}	
             				else 
             					out.println("read:failor");
             			 } else {
@@ -67,7 +77,7 @@ public class ServerThread extends Thread{
             			 }
             			 
             		 } else {
-            			 out.println("Wrong pattern use: read/write;yourKey;valuePair-valuePair");
+            			 out.println("Wrong pattern use: read/write|yourKey|valuePair§valuePair ...");
             		 }
                      if (inputLine.equals("close"))
                          break;

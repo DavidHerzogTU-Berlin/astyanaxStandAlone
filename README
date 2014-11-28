@@ -11,21 +11,18 @@ g
    cd cassandraToRun
    ant
 
-3) Start Server on port 2345:
+3) clone our YCSB and (just for now) SWITCH to the branch AstyanaxServerClient :
+	git clone https://github.com/DavidHerzogTU-Berlin/ycsb.git
+	cd ycsb
+	git checkout -b AstyanaxServerClient
+	mvn clean package
+
+4) Start Server on port 2345:
 		mvn exec:java -Dexec.mainClass="com.c3.server.Server" -Dexec.args="2345"
 
    Now your Cassandra cluster needs to run
 
-   Start Client (Connecting to: 127.0.0.1 port 2345):
-   		mvn exec:java -Dexec.mainClass="com.c3.client.LittleClient" -Dexec.args="127.0.0.1 2345"
+   Run ycsb with our AstyanaxServerClient (your classpath may need to be set):
+   	bin/ycsb run astyServer -P workloads/workloada
+  
 
----------OR---------
-
-	Use an IDE of your choice and import the astyanaxproject then run the main method in Server.java -> Server is now listening. 
-	Start your cassandra cluster.
-	To Test the server you can use our LittleClient.java
-	-> Run the main method and now you can give commands via the command line for example:
-	write;Eric_Cartman;head-blue;body-fat
-	read;Eric_Cartman;
-
-	The server will respond with a message whether the commands were successful.

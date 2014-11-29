@@ -41,7 +41,7 @@ public class TalkToCassandraWithAstyanaxC3 {
 
     public boolean init() throws org.apache.thrift.TException;
 
-    public boolean write(String key, Map<String,String> hashmap) throws org.apache.thrift.TException;
+    public boolean write(String key, Map<String,String> values) throws org.apache.thrift.TException;
 
     public Map<String,String> read(String key, Set<String> fields) throws org.apache.thrift.TException;
 
@@ -51,7 +51,7 @@ public class TalkToCassandraWithAstyanaxC3 {
 
     public void init(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void write(String key, Map<String,String> hashmap, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void write(String key, Map<String,String> values, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void read(String key, Set<String> fields, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
@@ -99,17 +99,17 @@ public class TalkToCassandraWithAstyanaxC3 {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "init failed: unknown result");
     }
 
-    public boolean write(String key, Map<String,String> hashmap) throws org.apache.thrift.TException
+    public boolean write(String key, Map<String,String> values) throws org.apache.thrift.TException
     {
-      send_write(key, hashmap);
+      send_write(key, values);
       return recv_write();
     }
 
-    public void send_write(String key, Map<String,String> hashmap) throws org.apache.thrift.TException
+    public void send_write(String key, Map<String,String> values) throws org.apache.thrift.TException
     {
       write_args args = new write_args();
       args.setKey(key);
-      args.setHashmap(hashmap);
+      args.setValues(values);
       sendBase("write", args);
     }
 
@@ -194,27 +194,27 @@ public class TalkToCassandraWithAstyanaxC3 {
       }
     }
 
-    public void write(String key, Map<String,String> hashmap, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void write(String key, Map<String,String> values, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      write_call method_call = new write_call(key, hashmap, resultHandler, this, ___protocolFactory, ___transport);
+      write_call method_call = new write_call(key, values, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class write_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String key;
-      private Map<String,String> hashmap;
-      public write_call(String key, Map<String,String> hashmap, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private Map<String,String> values;
+      public write_call(String key, Map<String,String> values, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.key = key;
-        this.hashmap = hashmap;
+        this.values = values;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("write", org.apache.thrift.protocol.TMessageType.CALL, 0));
         write_args args = new write_args();
         args.setKey(key);
-        args.setHashmap(hashmap);
+        args.setValues(values);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -319,7 +319,7 @@ public class TalkToCassandraWithAstyanaxC3 {
 
       public write_result getResult(I iface, write_args args) throws org.apache.thrift.TException {
         write_result result = new write_result();
-        result.success = iface.write(args.key, args.hashmap);
+        result.success = iface.write(args.key, args.values);
         result.setSuccessIsSet(true);
         return result;
       }
@@ -464,7 +464,7 @@ public class TalkToCassandraWithAstyanaxC3 {
       }
 
       public void start(I iface, write_args args, org.apache.thrift.async.AsyncMethodCallback<Boolean> resultHandler) throws TException {
-        iface.write(args.key, args.hashmap,resultHandler);
+        iface.write(args.key, args.values,resultHandler);
       }
     }
 
@@ -1134,7 +1134,7 @@ public class TalkToCassandraWithAstyanaxC3 {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("write_args");
 
     private static final org.apache.thrift.protocol.TField KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("key", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField HASHMAP_FIELD_DESC = new org.apache.thrift.protocol.TField("hashmap", org.apache.thrift.protocol.TType.MAP, (short)2);
+    private static final org.apache.thrift.protocol.TField VALUES_FIELD_DESC = new org.apache.thrift.protocol.TField("values", org.apache.thrift.protocol.TType.MAP, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -1143,12 +1143,12 @@ public class TalkToCassandraWithAstyanaxC3 {
     }
 
     public String key; // required
-    public Map<String,String> hashmap; // required
+    public Map<String,String> values; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
       KEY((short)1, "key"),
-      HASHMAP((short)2, "hashmap");
+      VALUES((short)2, "values");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1165,8 +1165,8 @@ public class TalkToCassandraWithAstyanaxC3 {
         switch(fieldId) {
           case 1: // KEY
             return KEY;
-          case 2: // HASHMAP
-            return HASHMAP;
+          case 2: // VALUES
+            return VALUES;
           default:
             return null;
         }
@@ -1212,7 +1212,7 @@ public class TalkToCassandraWithAstyanaxC3 {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.KEY, new org.apache.thrift.meta_data.FieldMetaData("key", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      tmpMap.put(_Fields.HASHMAP, new org.apache.thrift.meta_data.FieldMetaData("hashmap", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.VALUES, new org.apache.thrift.meta_data.FieldMetaData("values", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
               new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
               new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
@@ -1225,11 +1225,11 @@ public class TalkToCassandraWithAstyanaxC3 {
 
     public write_args(
       String key,
-      Map<String,String> hashmap)
+      Map<String,String> values)
     {
       this();
       this.key = key;
-      this.hashmap = hashmap;
+      this.values = values;
     }
 
     /**
@@ -1239,9 +1239,9 @@ public class TalkToCassandraWithAstyanaxC3 {
       if (other.isSetKey()) {
         this.key = other.key;
       }
-      if (other.isSetHashmap()) {
-        Map<String,String> __this__hashmap = new HashMap<String,String>(other.hashmap);
-        this.hashmap = __this__hashmap;
+      if (other.isSetValues()) {
+        Map<String,String> __this__values = new HashMap<String,String>(other.values);
+        this.values = __this__values;
       }
     }
 
@@ -1252,7 +1252,7 @@ public class TalkToCassandraWithAstyanaxC3 {
     @Override
     public void clear() {
       this.key = null;
-      this.hashmap = null;
+      this.values = null;
     }
 
     public String getKey() {
@@ -1279,38 +1279,38 @@ public class TalkToCassandraWithAstyanaxC3 {
       }
     }
 
-    public int getHashmapSize() {
-      return (this.hashmap == null) ? 0 : this.hashmap.size();
+    public int getValuesSize() {
+      return (this.values == null) ? 0 : this.values.size();
     }
 
-    public void putToHashmap(String key, String val) {
-      if (this.hashmap == null) {
-        this.hashmap = new HashMap<String,String>();
+    public void putToValues(String key, String val) {
+      if (this.values == null) {
+        this.values = new HashMap<String,String>();
       }
-      this.hashmap.put(key, val);
+      this.values.put(key, val);
     }
 
-    public Map<String,String> getHashmap() {
-      return this.hashmap;
+    public Map<String,String> getValues() {
+      return this.values;
     }
 
-    public write_args setHashmap(Map<String,String> hashmap) {
-      this.hashmap = hashmap;
+    public write_args setValues(Map<String,String> values) {
+      this.values = values;
       return this;
     }
 
-    public void unsetHashmap() {
-      this.hashmap = null;
+    public void unsetValues() {
+      this.values = null;
     }
 
-    /** Returns true if field hashmap is set (has been assigned a value) and false otherwise */
-    public boolean isSetHashmap() {
-      return this.hashmap != null;
+    /** Returns true if field values is set (has been assigned a value) and false otherwise */
+    public boolean isSetValues() {
+      return this.values != null;
     }
 
-    public void setHashmapIsSet(boolean value) {
+    public void setValuesIsSet(boolean value) {
       if (!value) {
-        this.hashmap = null;
+        this.values = null;
       }
     }
 
@@ -1324,11 +1324,11 @@ public class TalkToCassandraWithAstyanaxC3 {
         }
         break;
 
-      case HASHMAP:
+      case VALUES:
         if (value == null) {
-          unsetHashmap();
+          unsetValues();
         } else {
-          setHashmap((Map<String,String>)value);
+          setValues((Map<String,String>)value);
         }
         break;
 
@@ -1340,8 +1340,8 @@ public class TalkToCassandraWithAstyanaxC3 {
       case KEY:
         return getKey();
 
-      case HASHMAP:
-        return getHashmap();
+      case VALUES:
+        return getValues();
 
       }
       throw new IllegalStateException();
@@ -1356,8 +1356,8 @@ public class TalkToCassandraWithAstyanaxC3 {
       switch (field) {
       case KEY:
         return isSetKey();
-      case HASHMAP:
-        return isSetHashmap();
+      case VALUES:
+        return isSetValues();
       }
       throw new IllegalStateException();
     }
@@ -1384,12 +1384,12 @@ public class TalkToCassandraWithAstyanaxC3 {
           return false;
       }
 
-      boolean this_present_hashmap = true && this.isSetHashmap();
-      boolean that_present_hashmap = true && that.isSetHashmap();
-      if (this_present_hashmap || that_present_hashmap) {
-        if (!(this_present_hashmap && that_present_hashmap))
+      boolean this_present_values = true && this.isSetValues();
+      boolean that_present_values = true && that.isSetValues();
+      if (this_present_values || that_present_values) {
+        if (!(this_present_values && that_present_values))
           return false;
-        if (!this.hashmap.equals(that.hashmap))
+        if (!this.values.equals(that.values))
           return false;
       }
 
@@ -1405,10 +1405,10 @@ public class TalkToCassandraWithAstyanaxC3 {
       if (present_key)
         list.add(key);
 
-      boolean present_hashmap = true && (isSetHashmap());
-      list.add(present_hashmap);
-      if (present_hashmap)
-        list.add(hashmap);
+      boolean present_values = true && (isSetValues());
+      list.add(present_values);
+      if (present_values)
+        list.add(values);
 
       return list.hashCode();
     }
@@ -1431,12 +1431,12 @@ public class TalkToCassandraWithAstyanaxC3 {
           return lastComparison;
         }
       }
-      lastComparison = Boolean.valueOf(isSetHashmap()).compareTo(other.isSetHashmap());
+      lastComparison = Boolean.valueOf(isSetValues()).compareTo(other.isSetValues());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetHashmap()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hashmap, other.hashmap);
+      if (isSetValues()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.values, other.values);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1469,11 +1469,11 @@ public class TalkToCassandraWithAstyanaxC3 {
       }
       first = false;
       if (!first) sb.append(", ");
-      sb.append("hashmap:");
-      if (this.hashmap == null) {
+      sb.append("values:");
+      if (this.values == null) {
         sb.append("null");
       } else {
-        sb.append(this.hashmap);
+        sb.append(this.values);
       }
       first = false;
       sb.append(")");
@@ -1527,22 +1527,22 @@ public class TalkToCassandraWithAstyanaxC3 {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
-            case 2: // HASHMAP
+            case 2: // VALUES
               if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
                 {
                   org.apache.thrift.protocol.TMap _map0 = iprot.readMapBegin();
-                  struct.hashmap = new HashMap<String,String>(2*_map0.size);
+                  struct.values = new HashMap<String,String>(2*_map0.size);
                   String _key1;
                   String _val2;
                   for (int _i3 = 0; _i3 < _map0.size; ++_i3)
                   {
                     _key1 = iprot.readString();
                     _val2 = iprot.readString();
-                    struct.hashmap.put(_key1, _val2);
+                    struct.values.put(_key1, _val2);
                   }
                   iprot.readMapEnd();
                 }
-                struct.setHashmapIsSet(true);
+                struct.setValuesIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -1567,11 +1567,11 @@ public class TalkToCassandraWithAstyanaxC3 {
           oprot.writeString(struct.key);
           oprot.writeFieldEnd();
         }
-        if (struct.hashmap != null) {
-          oprot.writeFieldBegin(HASHMAP_FIELD_DESC);
+        if (struct.values != null) {
+          oprot.writeFieldBegin(VALUES_FIELD_DESC);
           {
-            oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, struct.hashmap.size()));
-            for (Map.Entry<String, String> _iter4 : struct.hashmap.entrySet())
+            oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, struct.values.size()));
+            for (Map.Entry<String, String> _iter4 : struct.values.entrySet())
             {
               oprot.writeString(_iter4.getKey());
               oprot.writeString(_iter4.getValue());
@@ -1601,17 +1601,17 @@ public class TalkToCassandraWithAstyanaxC3 {
         if (struct.isSetKey()) {
           optionals.set(0);
         }
-        if (struct.isSetHashmap()) {
+        if (struct.isSetValues()) {
           optionals.set(1);
         }
         oprot.writeBitSet(optionals, 2);
         if (struct.isSetKey()) {
           oprot.writeString(struct.key);
         }
-        if (struct.isSetHashmap()) {
+        if (struct.isSetValues()) {
           {
-            oprot.writeI32(struct.hashmap.size());
-            for (Map.Entry<String, String> _iter5 : struct.hashmap.entrySet())
+            oprot.writeI32(struct.values.size());
+            for (Map.Entry<String, String> _iter5 : struct.values.entrySet())
             {
               oprot.writeString(_iter5.getKey());
               oprot.writeString(_iter5.getValue());
@@ -1631,17 +1631,17 @@ public class TalkToCassandraWithAstyanaxC3 {
         if (incoming.get(1)) {
           {
             org.apache.thrift.protocol.TMap _map6 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.hashmap = new HashMap<String,String>(2*_map6.size);
+            struct.values = new HashMap<String,String>(2*_map6.size);
             String _key7;
             String _val8;
             for (int _i9 = 0; _i9 < _map6.size; ++_i9)
             {
               _key7 = iprot.readString();
               _val8 = iprot.readString();
-              struct.hashmap.put(_key7, _val8);
+              struct.values.put(_key7, _val8);
             }
           }
-          struct.setHashmapIsSet(true);
+          struct.setValuesIsSet(true);
         }
       }
     }

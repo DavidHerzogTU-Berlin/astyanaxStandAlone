@@ -1,26 +1,45 @@
 package com.c3.server;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+import org.apache.astyanax.thrift.TalkToCassandraWithAstyanaxC3;
+import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.TServer.Args;
+import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.transport.TSSLTransportFactory;
+import org.apache.thrift.transport.TServerSocket;
+import org.apache.thrift.transport.TServerTransport;
 
 public class Server {
-	public static void main(String[] args) throws IOException {
-		
-		if (args.length != 1) {
-			System.err.println("Usage (args): <port number>");
-			System.exit(1);
-		}
-		
-		int portNumber = Integer.parseInt(args[0]);
-		boolean listening = true;
-		System.out.println("Server is running and listening...");
-		try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-			while (listening) {
-				new ServerThread(serverSocket.accept()).start();
-			}
-		} catch (IOException e) {
-			System.err.println("Could not listen on port " + portNumber);
-			System.exit(-1);
-		}
-	}
+	public static TalkToCassandraWithAstyanaxC3Handler handler;
+
+  public static TalkToCassandraWithAstyanaxC3.Processor processor;
+
+  public static void main(String [] args) {
+    try {
+      handler = new TalkToCassandraWithAstyanaxC3Handler();
+      processor = new TalkToCassandraWithAstyanaxC3.Processor(handler);
+
+      Runnable simple = new Runnable() {
+        public void run() {
+          simple(processor);
+        }
+      };      
+     
+      new Thread(simple).start();
+    } catch (Exception x) {
+     	x.printStackTrace();
+    }
+  }
+
+  public static void simple(TalkToCassandraWithAstyanaxC3.Processor processor) {
+    try {
+      TServerTransport serverTransport = new TServerSocket(2345);
+      TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
+
+      System.out.println("Server is running and listening...");
+      server.serve();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
 }

@@ -12,27 +12,33 @@ public class Server {
 	public static TalkToCassandraWithAstyanaxC3Handler handler;
 
   public static TalkToCassandraWithAstyanaxC3.Processor processor;
-
+  private static int port = 2345;
   public static void main(String [] args) {
-    try {
-      handler = new TalkToCassandraWithAstyanaxC3Handler();
-      processor = new TalkToCassandraWithAstyanaxC3.Processor(handler);
 
-      Runnable simple = new Runnable() {
-        public void run() {
-          simple(processor);
-        }
-      };      
-     
-      new Thread(simple).start();
-    } catch (Exception x) {
-     	x.printStackTrace();
-    }
+    try {
+		if (args.length == 1){
+			port = Integer.parseInt(args[0]);
+		} else {
+			System.out.println("No argument set: Using default port 2345");
+		}
+		handler = new TalkToCassandraWithAstyanaxC3Handler();
+		processor = new TalkToCassandraWithAstyanaxC3.Processor(handler);
+
+		Runnable simple = new Runnable() {
+			public void run() {
+				simple(processor);
+			}
+		};      
+
+		new Thread(simple).start();
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
   }
 
   public static void simple(TalkToCassandraWithAstyanaxC3.Processor processor) {
     try {
-      TServerTransport serverTransport = new TServerSocket(2345);
+      TServerTransport serverTransport = new TServerSocket(port);
       TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
 
       System.out.println("Server is running and listening...");

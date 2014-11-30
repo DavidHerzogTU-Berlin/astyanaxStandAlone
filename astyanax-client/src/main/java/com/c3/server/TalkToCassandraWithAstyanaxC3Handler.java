@@ -12,17 +12,16 @@ public class TalkToCassandraWithAstyanaxC3Handler implements TalkToCassandraWith
 
 	private AstyanaxClient astyanaxClient; 
 
-	public void TalkToCassandraWithAstyanaxC3Handler() {
-		astyanaxClient = new AstyanaxClient();
-	}
-
 	@Override
 	public boolean init() throws TException {
+		astyanaxClient = new AstyanaxClient();
 		return astyanaxClient.init();
 	}
 
 	@Override
     public boolean write(String key, Map<String,String> values) throws TException {
+    	if (astyanaxClient == null)
+    		throw new TException("AstyanaxClient is null. Init needs to be called first.");
     	HashMap<String, String> hashMap = 
    							(values instanceof HashMap) 
 						      ? (HashMap) values 
@@ -32,6 +31,8 @@ public class TalkToCassandraWithAstyanaxC3Handler implements TalkToCassandraWith
 
     @Override
     public Map<String,String> read(String key, Set<String> fields) throws TException {
+    	if (astyanaxClient == null)
+    		throw new TException("AstyanaxClient is null. Init needs to be called first.");
     	HashMap<String, String> result = new HashMap<String, String>();
     	astyanaxClient.read(null, key, fields, result);
     	return result;

@@ -2,8 +2,8 @@ Astyanax Stand Alone Client
 Run Server which listens on a TCP port and passes commands to our Astyanax client.
 g
 1) clone the project:
-	git clone git@gitlab.tubit.tu-berlin.de:freecookie/astyanxclient.git
-	cd astyanaxclient
+	git clone https://github.com/DavidHerzogTU-Berlin/astyanaxStandAlone.git
+	cd astyanaxStandAlone
 	mvn clean package
 
 2) Use the our Cassandra cluster:
@@ -22,7 +22,10 @@ g
 
    Now your Cassandra cluster needs to run
 
-   Run ycsb with our AstyanaxServerClient (your classpath may need to be set):
-   	bin/ycsb run astyServer -P workloads/workloada
+   Run ycsb with our AstyanaxServerClient and make sure your class path 
+   includes astyanax-server-binding-0.1.4.jar . Example location:
+   /home/david/ycsb/ycsbAstyServerClient/astyanaxServer/target/astyanax-server-binding-0.1.4.jar
+
+   	bin/ycsb run astyServer -P workloads/workloadc
   
 

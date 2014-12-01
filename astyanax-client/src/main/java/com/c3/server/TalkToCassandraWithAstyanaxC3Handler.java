@@ -22,6 +22,8 @@ public class TalkToCassandraWithAstyanaxC3Handler implements TalkToCassandraWith
     public boolean write(String key, Map<String,String> values) throws TException {
     	if (astyanaxClient == null)
     		throw new TException("AstyanaxClient is null. Init needs to be called first.");
+    	if (key == null || values == null)
+    		throw new TException("key and values are not allowed to be null.");
     	HashMap<String, String> hashMap = 
    							(values instanceof HashMap) 
 						      ? (HashMap) values 
@@ -33,6 +35,8 @@ public class TalkToCassandraWithAstyanaxC3Handler implements TalkToCassandraWith
     public Map<String,String> read(String key, Set<String> fields) throws TException {
     	if (astyanaxClient == null)
     		throw new TException("AstyanaxClient is null. Init needs to be called first.");
+    	if (key == null)
+    		throw new TException("key is not allowed to be null.");
     	HashMap<String, String> result = new HashMap<String, String>();
     	astyanaxClient.read(null, key, fields, result);
     	return result;

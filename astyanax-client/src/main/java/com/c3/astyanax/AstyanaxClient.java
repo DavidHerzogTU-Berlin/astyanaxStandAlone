@@ -37,7 +37,7 @@ public class AstyanaxClient {
 	public static final String CONNECTION_POOL_PROPERTY_DEFAULT = "TOKEN_AWARE";
 
 	public static final String SEED_PROPERTY = "seeds";
-	public static final String SEED_PROPERTY_DEFAULT = "127.0.0.1:9160,127.0.0.2:9160,127.0.0.3:9160";
+	public static final String SEED_PROPERTY_DEFAULT = "192.168.100.17:9160,192.168.100.20:9160,192.168.100.21:9160";
 
 	public static final String MAXCONS_PROPERTY = "maxCons";
 	public static final String MAXCONS_PROPERTY_DEFAULT = "100";

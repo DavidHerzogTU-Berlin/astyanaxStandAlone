@@ -15,7 +15,6 @@ public class TalkToCassandraWithAstyanaxC3Handler implements TalkToCassandraWith
 	@Override
 	public boolean init() throws TException {
 		astyanaxClient = new AstyanaxClient();
-        System.out.println("init: " + Server.hostSelectorStrategy);
 		return astyanaxClient.init(Server.discoveryType, Server.connectionPoolType, Server.seeds, Server.maxCons,
             Server.astyPort, Server.hostSelectorStrategy, Server.scoreStrategy, Server.map_size);
 	}

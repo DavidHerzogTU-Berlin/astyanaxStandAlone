@@ -47,9 +47,7 @@ public class Server {
 						astyPort = args[i].split("=")[1];
 					}
 					if(args[i].contains("hostSelectorStrategy=")){
-						System.out.println("hostSelectorStrategy saved");
 						hostSelectorStrategy = args[i].split("=")[1];
-						System.out.println(hostSelectorStrategy);
 					}
 					if(args[i].contains("scoreStrategy=")){
 						scoreStrategy = args[i].split("=")[1];

@@ -4,7 +4,7 @@
 
   <groupId>com.c3.astyanax</groupId>
   <artifactId>astyanax-client</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>astyanax-client</name>

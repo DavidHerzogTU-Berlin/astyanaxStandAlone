@@ -13,14 +13,54 @@ public class Server {
 
   public static TalkToCassandraWithAstyanaxC3.Processor processor;
   private static int port = 2345;
+  public static String discoveryType = null;
+  public static String connectionPoolType = null;
+  public static String seeds = null;
+  public static String maxCons = null;
+  public static String astyPort = null;
+  public static String hostSelectorStrategy = null;
+  public static String scoreStrategy = null;
+  public static String map_size;
   public static void main(String [] args) {
 
     try {
 		if (args.length == 1){
 			port = Integer.parseInt(args[0]);
 		} else {
-			System.out.println("No argument set: Using default port 2345");
+			if (args.length > 1) {
+				port = Integer.parseInt(args[0]);
+				String valueOfArg = null;
+				for (int i = 1; i < args.length; i++) {
+					if(args[i].contains("discoveryType=")){
+						discoveryType = args[i].split("=")[1];
+					}
+					if(args[i].contains("connectionPoolType=")){
+						connectionPoolType = args[i].split("=")[1];
+					}
+					if(args[i].contains("seeds=")){
+						seeds = args[i].split("=")[1];
+					}
+					if(args[i].contains("maxCons=")){
+						maxCons = args[i].split("=")[1];
+					}
+					if(args[i].contains("astyPort=")){
+						astyPort = args[i].split("=")[1];
+					}
+					if(args[i].contains("hostSelectorStrategy=")){
+						System.out.println("hostSelectorStrategy saved");
+						hostSelectorStrategy = args[i].split("=")[1];
+						System.out.println(hostSelectorStrategy);
+					}
+					if(args[i].contains("scoreStrategy=")){
+						scoreStrategy = args[i].split("=")[1];
+					}
+				}
+			} else {
+				System.out.println("No argument set: Using default port 2345");
+			}
+			
 		}
+
 		handler = new TalkToCassandraWithAstyanaxC3Handler();
 		processor = new TalkToCassandraWithAstyanaxC3.Processor(handler);
 

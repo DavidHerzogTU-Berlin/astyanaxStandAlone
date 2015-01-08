@@ -8,6 +8,7 @@ import com.netflix.astyanax.connectionpool.OperationResult;
 import com.netflix.astyanax.connectionpool.exceptions.ConnectionException;
 import com.netflix.astyanax.connectionpool.impl.*;
 import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
+import com.netflix.astyanax.connectionpool.impl.PendingRequestMap;
 import com.netflix.astyanax.impl.AstyanaxConfigurationImpl;
 import com.netflix.astyanax.model.ColumnFamily;
 import com.netflix.astyanax.model.ColumnList;
@@ -24,35 +25,25 @@ public class AstyanaxClient {
 	private ColumnFamily<String, String> EMP_CF;
 	private static final String EMP_CF_NAME = "data";
 
-	public static final String READ_CONSISTENCY_LEVEL_PROPERTY = "cassandra.readconsistencylevel";
 	public static final String READ_CONSISTENCY_LEVEL_PROPERTY_DEFAULT = "ONE";
 
-	public static final String WRITE_CONSISTENCY_LEVEL_PROPERTY = "cassandra.writeconsistencylevel";
 	public static final String WRITE_CONSISTENCY_LEVEL_PROPERTY_DEFAULT = "ONE";
 
-	public static final String NODE_DISCOVERY_PROPERTY = "discoveryType";
-	public static final String NODE_DISCOVERY_PROPERTY_DEFAULT = "RING_DESCRIBE";
+	public static String NODE_DISCOVERY_PROPERTY_DEFAULT = "RING_DESCRIBE";
 
-	public static final String CONNECTION_POOL_PROPERTY = "connectionPoolType";
-	public static final String CONNECTION_POOL_PROPERTY_DEFAULT = "TOKEN_AWARE";
+	public static String CONNECTION_POOL_PROPERTY_DEFAULT = "C3";
 
-	public static final String SEED_PROPERTY = "seeds";
-	public static final String SEED_PROPERTY_DEFAULT = "192.168.100.17:9160,192.168.100.20:9160,192.168.100.21:9160";
+	public static String SEED_PROPERTY_DEFAULT = "192.168.100.17:9160,192.168.100.20:9160,192.168.100.21:9160";
 
-	public static final String MAXCONS_PROPERTY = "maxCons";
-	public static final String MAXCONS_PROPERTY_DEFAULT = "100";
+	public static String MAXCONS_PROPERTY_DEFAULT = "100";
 
-	public static final String PORT_PROPERTY = "port";
-	public static final String PORT_PROPERTY_DEFAULT = "9160";
+	public static String PORT_PROPERTY_DEFAULT = "9160";
 	
-	public static final String HOST_SELECTOR_STRATEGY = "hostSelectorStrategy";
-	public static final String HOST_SELECTOR_STRATEGY_DEFAULT = "ROUND_ROBIN";
+	public static String HOST_SELECTOR_STRATEGY_DEFAULT = "C3";
 	
-	public static final String SCORE_STRATEGY = "scoreStrategy";
-	public static final String SCORE_STRATEGY_DEFAULT = "continuous";
+	public static String SCORE_STRATEGY_DEFAULT = "continuous";
 	
-	public static final String MAP_SIZE = "map_size";
-	public static final String MAP_SIZE_DEFAULT = "crash: map_size needs to be set";
+	public static String MAP_SIZE_DEFAULT = "3";
 
 	private static AstyanaxContext<Keyspace> context;
 	private static Keyspace keyspace;	
@@ -61,8 +52,27 @@ public class AstyanaxClient {
 	public static final boolean OK = true;
 	public static final boolean ERROR = false;
 
-	public boolean init() {
+	public boolean init(String discoveryType, String connectionPoolType, String seeds, String maxCons, 
+		String port, String hostSelectorStrategy, String scoreStrategy, String map_size) {
 		try {
+			if(discoveryType != null)
+				NODE_DISCOVERY_PROPERTY_DEFAULT = discoveryType;
+			if(connectionPoolType != null)
+				CONNECTION_POOL_PROPERTY_DEFAULT = connectionPoolType;
+			if(seeds != null)
+				SEED_PROPERTY_DEFAULT = seeds;
+			if(maxCons != null)
+				MAXCONS_PROPERTY_DEFAULT = maxCons;
+			if(port != null)
+				PORT_PROPERTY_DEFAULT = port;
+			if(hostSelectorStrategy != null)
+				HOST_SELECTOR_STRATEGY_DEFAULT = hostSelectorStrategy;
+			if(scoreStrategy != null)
+				SCORE_STRATEGY_DEFAULT = scoreStrategy;
+			if(map_size != null)
+				MAP_SIZE_DEFAULT = map_size;
+
+			PendingRequestMap.setMap_size(Integer.parseInt(MAP_SIZE_DEFAULT));
 			ConnectionPoolConfigurationImpl connectionPoolConfig = new ConnectionPoolConfigurationImpl(SCORE_STRATEGY_DEFAULT);
 			latencyScoreStrategy = SCORE_STRATEGY_DEFAULT;
 			if(latencyScoreStrategy.equals("continuous")) {
